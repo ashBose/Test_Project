@@ -1,0 +1,290 @@
+Welcome!
+
+
+
+**1. Data Processing
+Write a program in a language of your choice to read in two CSVs with the same columns as those below, inner join them on userid, and return the joined rows. Instead of two separate min_score columns, combine them into a single min_score column filled with the min of the min_scores from each input csv.
+**
+
+Example:
+input1.csv
+userid,age,min_score
+1,23,6
+6,54,300
+2,39,40
+
+
+input2.csv
+userid,state,min_score
+1,CA,12
+6,AK,44
+2,WA,100
+
+
+output.csv
+userid,age,state,min_score
+1,23,CA,6
+6,54,AK,44
+2,39,WA,40
+
+
+Answer:
+
+
+
+
+import pandas as pd
+
+
+input1 = 'input1.csv'
+input2 = 'input2.csv'
+df_input = pd.read_csv(input1)
+df_input1 = pd.read_csv(input2)
+
+
+merged = pd.merge( df_input, df_input1,  on=['userid'])
+
+
+min_score =[]
+for x,y in zip(merged['min_score_x'], merged['min_score_y']):
+         min_score.append(min(x,y))
+
+
+merged['min_score'] = min_score
+merged = merged.drop('min_score_x', 1)
+merged = merged.drop('min_score_y', 1)
+print  merged
+________________
+
+
+**2. SQL
+You have an SQL table (in your favorite SQL database) that looks like this:**
+
+
+userid        date                city
+1                2015-03-01        Seattle
+1                2015-04-06        Portland        
+22                2015-02-23        New York
+…
+
+
+**2.1 Write a query to count the number of rows per month for Seattle.**
+
+
+Select count(*), MONTH(date)  from table where city = ‘Seattle’ group by MONTH(date)
+
+
+
+
+**2.2 Write a query to identify the month with the most rows for Seattle.**
+
+
+Select max(y.num), y.month 
+  From ( Select count(*)  as num, MONTH(date) as month  from table where city = ‘Seattle’ group by MONTH(date)) y
+
+
+
+
+2.3 What flavor of SQL did you write your above answers in?
+
+
+I use MySQL
+
+
+
+
+
+
+________________
+
+
+**3. Broken Outlier Detector
+The code below is intended to take a list of numbers, leave the original list unchanged, and return a new list with any values that are more than 3 standard deviations from the median removed. It should raise an exception if more than 10% of the numbers were removed.
+**
+
+The Code:
+def strip_outliers(values):
+   values.sort()
+   median = values[len(values)/2]
+
+   variance = 0
+   for i in range(len(values) - 1):
+       variance += values[i] - median ** 2 / n
+   std_dev = variance ** 2
+
+   min_ok,max_ok = median-3*std_dev, med+3*std_dev
+   result = filter(values, lambda v: v <= min_ok or v >= max_ok)
+   if len(result) < 0.1 * len(values):
+       raise Exception("strip_outliers: too many outliers removed")
+   return result
+
+
+
+
+3.1 Identify all the correctness issues.
+def strip_outliers(values):
+    tmp = values
+   values.sort() # In this case the original list will be changed.
+   median = values[len(values)/2] # Need to handle the case for even number of elements in the list median = (values[len(values)/2] + values[len(values)/2 + 1] ) / 2
+    variance = 0
+   for i in range(len(values) - 1): # It will be for i in range(len(values))
+       variance += (values[i] - median ** 2 )/ median
+   std_dev = variance ** 2
+
+   min_ok,max_ok = median-3*std_dev, median+3*std_dev
+   result = filter(values, lambda v: v <= min_ok or v >= max_ok)
+    values = tmp 
+   if len(result) < 0.1 * len(values):
+       raise Exception("strip_outliers: too many outliers removed")
+
+   return result
+
+
+
+
+
+
+3.2 Identify ways you could improve its performance.
+
+
+Expensive part here is sorting . Which is nlogn time complexity. For huge dataset that can be expensive. We can use any big data infrastructure like spark to parallelize the algorithm  and make it faster.
+
+
+**5. Tic-Tac-Toe Design
+Think about how to design a tic-tac-toe game that runs on a computer. It should allow any mix of players and AIs to play. It should detect when the game is over and communicate the winner. You’re welcome to use a functional or object oriented approach. Don’t implement it. Instead, write down the public signatures (names, names of arguments, and argument + return types) for the core functions and/or classes in pseudocode. Feel free to add comments to explain, but keep it high level. Aim for less than 15 minutes on this question.
+**
+
+Answer:
+                        
+/*PSEUDOCODE*/
+create TicTacToe class
+ private n-by-n two_dimensional_arrays;
+
+
+Private String users[]; //List of users can play
+
+
+// holds the board
+ private boolean isFull = false
+// if true all the squares have been assigned.  
+ 
+ private boolean isDraw() ;
+// A method to check if the game is draw. Draw is a condition when values across diagonal , row, column are not same
+
+
+
+
+ private boolean victory();
+// A method  if returns true one of the players has won
+//Player will win when he has all cross across diagonal, row, column
+
+
+ private playerCounter = 1;
+// if it is odd it's player1's turn if even it's player2's turn
+
+
+
+
+ private int row;
+// row of the n-by-n array
+
+
+ private int column;
+// column of the n-by-n array
+
+
+// private void play();
+ // A method where user will  insert a value in a randomized fashion. It will get a random  matrix index.
+ It will insert X or 0 .
+
+
+// private HashMap<String, String> controller();
+
+
+Controller is a method which will control who can play in each turn. After each turn it will check the status of the game.
+It returns a hash map like
+ {“status” : “winner”, “user” : “ticktock”}
+
+
+6. Something is Wrong
+Imagine you just logged into a Linux server to check on how your data pipeline is running. You notice that a resource intensive job that is usually CPU bound and takes an hour to run has been running for 8 hours.
+
+
+6.1 What could have happened? List your top several hypotheses.
+
+
+1. It may have crashed  and program is hung on the crash
+2. Deadlock has happened.
+3. Any other CPU intensive process is also using resources
+4. Program is waiting for a event to happen to occur, for example a consumer is waiting to receive a data on message queue in a infinite loop
+
+
+
+
+6.2 For each hypothesis, exactly how do you test it? What tools do you use?
+
+
+1. Will check CPU usage of all running using top. Htop . Will check if any process is using more CPU
+2. I will check log messages in linux /var/log/message. Logs need to be searched for errors.
+
+
+7. Storage
+Sort these by how long it takes to read one random byte of data: SSD, CPU L2 cache, S3 (accessed from your laptop), redis*, RAM, HDD.
+
+
+*Assume that the redis server is running on a separate machine in the same building as your client, and that the server and client have a wired ethernet connection between them.
+
+
+CPU L2 cache
+RAM
+redis
+SSD
+HDD
+S3
+
+
+[ S3 will be slowest as it depends on network] 
+
+
+
+
+
+
+________________
+
+
+8. Performance Issues
+Imagine we have a system that’s responsible for counting the total number of pages viewed on a website. It’s a single process on a single machine, and it has a RESTful HTTP API with one endpoint. It looks like this:
+
+
+POST /increment?n=N
+
+
+Whenever this endpoint is hit, the system will increment its internal count by N, open its state file on disk, overwrite the state file with the new value of N, and close the file.
+
+
+There are many webserver processes on many machines, all calling into this system. Every time a webserver sees a web request, it calls out to the counter system like this:
+
+
+POST /increment?n=1
+
+
+8.1 Unsurprisingly, the system is having trouble keeping up. What steps would you take to improve the throughput of the system?
+
+
+Problem:
+The  system has its state file on disk, reading /writing data from disk will be IO bound. Besides we need to maintain synchronization to support multiple user. 
+
+
+Solution:
+To improve throughput we will store data in RAM, using any caching database.
+NoSQL database operations will be atomic , so we don’t need to maintain synchronization.
+
+
+Using a  distributed caching database system will be able to support high availability.
+
+
+8.2 Are there any tradeoffs you consider as you take those steps?
+
+
+I dont think of any tradeoffs. Only trade off i can think of is maintaining another database for the use.
