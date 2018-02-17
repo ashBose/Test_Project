@@ -55,19 +55,25 @@ public class ds {
             if (!result2.containsKey(myDomain)) {
                 result2.put(myDomain, count);
             }
-            String[] arr = myDomain.split("\\.");
-            for (String tmpArr : arr) {
-                //System.out.println(tmpArr);
 
-                if (!result2.containsKey(tmpArr)) {
-                    result2.put(tmpArr, count);
+            while(myDomain.length() != 0)
+             {
+                //System.out.println(tmpArr);
+                 int index = myDomain.indexOf(".");
+                 if(index == -1)
+                     break;
+                 String subDomain = myDomain.substring(index+1);
+
+                if (!result2.containsKey(subDomain)) {
+                    result2.put(subDomain, count);
                 } else {
 
-                    int c = result2.get(tmpArr);
-                    System.out.println(c + "  " + tmpArr);
-                    result2.put(tmpArr, c + count);
+                    int c = result2.get(subDomain);
+                    System.out.println(c + "  " + subDomain);
+                    result2.put(subDomain, c + count);
                 }
 
+                myDomain =  subDomain;
             }
         }
 
