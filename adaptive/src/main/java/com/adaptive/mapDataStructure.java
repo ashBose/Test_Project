@@ -17,7 +17,10 @@ counts = [ "900,google.com",
      "2,en.wikipedia.org",
      "1,es.wikipedia.org" ]
 
-Write a function that takes this input as a parameter and returns a data structure containing the number of hits that were recorded on each domain AND each domain under it. For example, an impression on "sports.yahoo.com" counts for "sports.yahoo.com", "yahoo.com", and "com". (Subdomains are added to the left of their parent domain. So "sports" and "sports.yahoo" are not valid domains.)
+Write a function that takes this input as a parameter and returns a data structure containing the number of hits 
+that were recorded on each domain AND each domain under it. For example, an impression on "sports.yahoo.com" counts 
+for "sports.yahoo.com", "yahoo.com", and "com". 
+(Subdomains are added to the left of their parent domain. So "sports" and "sports.yahoo" are not valid domains.)
 
 Expected output (in any order):
 1320    com
