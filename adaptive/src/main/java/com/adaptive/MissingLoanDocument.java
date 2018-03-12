@@ -1,5 +1,7 @@
 
 /*
+HACKER RANK TEST
+
 fileName,owner,docType,applicationId,contentLength
 bank_statement_123,Tony Stark,bank_statement,1,1000
 tax_document_1,Tony Stark,tax_return,1,16001
@@ -104,11 +106,12 @@ public class solution {
         for (Map.Entry<String, Set<String>> entry : LoanDocument.entrySet()) {
             key = entry.getKey();
             value = entry.getValue();
-            sb.append(key);
-            sb.append("\n");
-            tmpApplicationID = getDifference(applicationIDSet, value);
-            sb.append(String.join(" ", tmpApplicationID));
-            sb.append("\n");
+            if(tmpApplicationID.size() != 0) {
+                sb.append(key);
+                sb.append("\n");
+                sb.append(String.join(" ", tmpApplicationID));
+                sb.append("\n");
+            }
         }
         System.out.println(sb.toString());
     }
