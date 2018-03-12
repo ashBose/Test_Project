@@ -15,6 +15,29 @@ medical_history
 tax_return
 4
 
+fileName,owner,docType,applicationId,contentLength
+bank_statement_123,Tony Stark,bank_statement,1,1000
+tax_document_1,Tony Stark,tax_return,1,16001
+tax_document_2,Steve Rogers,tax_return,2,2000
+document_423,Thor Odinson,tax_return,3,1500
+medical_report_1,Thor Odinson,medical_history,3,15000
+prescription_1,Stephen Strange,medical_history,5,200
+steven_asset,Stephen Strange,bank_statement,5,4000
+john_paystub,John Snow,paystub,0,2000
+curry_insurance,Stephen Curry,proof_insurance,-1,6000
+
+$ cat output002.txt
+bank_statement
+-1 0 2 3
+medical_history
+-1 0 1 2
+paystub
+-1 1 2 3 5
+proof_insurance
+0 1 2 3 5
+tax_return
+-1 0 5
+
  */
 
 
