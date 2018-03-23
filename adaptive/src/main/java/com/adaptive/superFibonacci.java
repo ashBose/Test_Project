@@ -52,17 +52,13 @@ public class fibo {
 
         int firstSum ,lastSum, nextElement = sum;
         while (true && (sum != x) && (sum < x) || (sum < 0)) {
-
-
             firstSum = store.get(i);
             lastSum = store.get(j);
             sum =  sum + lastSum - firstSum;
-            System.out.println(sum);
+            //System.out.println(sum);
             store.add(sum);
-
             i += 1;
             j += 1;
-
         }
         if (sum == x)
             return j;
@@ -74,6 +70,5 @@ public class fibo {
         int[] arr= new int[]{1,2,3};
         System.out.println(FindIndex(3, arr, 20));
     }
-
 }
 
